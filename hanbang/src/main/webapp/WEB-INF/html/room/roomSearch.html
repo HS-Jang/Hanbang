@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="HeaderLayout">
+
+<head>
+<meta charset="utf-8" />
+<!-- <title>매물조회</title> -->
+
+	<script>
+			$(document).ready(function(){
+				$("#detail").click(
+					function(){
+						$("#detail").toggleClass("collapsed");
+						if($("#detail").hasClass("collapsed")){
+							$(this).removeClass("collapsed");
+						}else{
+							$(this).hasClass("collapsed");
+						}
+						
+						$("#detail").toggleClass("in");
+						if($("#detail").hasClass("in")){
+							$("#detail").removeClass("in");
+						}else{
+							$("#detail").addClass("in");
+						}
+						
+					});
+				//$("#ex16b").slider({ min: 0, max: 10, value: [0, 10], focus: true });
+
+			    $("#collapseBtn").click(function(){
+			        $("#collapseDetailSearch").collapse('toggle');
+			    });
+			    
+				
+		      	$("#popMap").click(function(){
+		      		//$("#popMap").attr("href", "/selectMapPoint.do?"+$(roomOptionVO).serialize());
+		      		roomOptionVO.action = "/selectMapPoint2.do";
+				});	
+		      	$("#searchBtn").click(function(){
+		      		//$("#popMap").attr("href", "/selectMapPoint.do?"+$(roomOptionVO).serialize());
+		      		roomOptionVO.action = "/roomListMap.do";
+				});	
+		      	
+			});
+		</script>
+  <style>
+  #collapseBtn {
+	  -webkit-border-radius: 3em;
+	  -moz-border-radius: 3em;
+	  -ms-border-radius: 3em;
+	  -o-border-radius: 3em;
+	  border-radius: 3em;
+	  -webkit-box-shadow: none;
+	  -moz-box-shadow: none;
+	  box-shadow: none;
+	  padding: 5px 25px;
+	  display:block;
+	  width:100%;
+	  height:27px;
+	  font-size:13px;
+  }
+  </style>
+</head>
+<body>
+	<h1 layout:fragment="header">매물조회</h1>
+	<div layout:fragment="content" class="container">
+		<form id="roomOptionVO" 
+		 th:action="@{/roomListMap.do}"
+	     th:object="${roomOptionVO}" 
+	     action="/roomListMap.do" 
+	     method="post">
+		     <div class="wrapper">
+		   	 	 <section id="support" class="doublediagonal">
+	   	 	 		<div class="container">
+		   	 	 		<div class="row">
+				   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media">
+					                <a class="pull-left">
+					                    <i class="fa fa-map-marker fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">목적지 주소</h3>
+					                </div>
+					            </div>
+					         </div>
+					         
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+                                 <div>
+			                    	 <div class="col-md-9 col-sm-9 scrollpoint sp-effect1 form-group">
+						     			 <input type="text" class="form-control" th:field="*{address}" placeholder="검색버튼을 눌러주세요" disabled="disabled"/>
+					     			 </div>
+			                    	 <div class="col-md-3 col-sm-3 scrollpoint sp-effect1">
+					                     <button class="btn btn-primary btn-lg fa fa-search fa-2x pull-right" id="popMap"></button>
+	                                 </div>
+	                                 <div class="form-group">
+	                                 	<input type="hidden" class="form-control" th:field="*{latitude}"/>
+	                                 </div>
+	                                 <div class="form-group">
+	                                 	<input type="hidden" class="form-control" th:field="*{longitude}"/>
+	                                 </div>
+                                 </div>
+			                </div>
+		                </div>
+		                     
+			                
+		   	 	 		<div class="row">
+				   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media ">
+					                <a class="pull-left">
+					                    <i class="fa fa-clock-o fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">소요시간</h3>
+					                </div>
+					            </div>
+					         </div>			                
+		                     <div class="col-md-5 col-sm-5 scrollpoint sp-effect1">
+		                        <div class="media feature form-group"><!-- 시도 -->
+	                                      <select type="text" class="form-control" th:field="*{transportation}">
+											<!--  th:field="*{roomkind}" -->
+											<option value="1">도보</option>
+											<option value="2">자가용</option>
+	                                     </select>
+		                        </div>
+		                     </div>
+					         
+				   	 	 	<div class="col-md-3 col-sm-3 contact-details scrollpoint sp-effect2 form-group">
+	                              <input type="text"  class="form-control" th:field="*{time}" placeholder="소요시간"/> 
+					         </div>
+		   	 	 		</div>
+		   	 	 		
+		   	 	 		
+		   	 	 		<div class="row">
+				   	 	 	<div class="col-md-4 col-sm-3 contact-details scrollpoint sp-effect2">
+					            <div class="media ">
+					                <a class="pull-left">
+					                    <i class="fa fa-money fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">보증금</h3>
+					                </div>
+					            </div>
+					         </div>			                
+		                     <div class="col-md-3 col-sm-3 scrollpoint sp-effect1">
+		                        <div class="media feature form-group"><!-- 시도 -->
+	                                      <select class="form-control" th:field="*{depositLow}" >
+											<option value="0">전체</option>
+											<option value="100">100만</option>
+											<option value="500">500만</option>
+											<option value="1000">1,000만</option>
+											<option value="2000">2,000만</option>
+											<option value="3000">3,000만</option>
+											<option value="4000">4,000만</option>
+											<option value="5000">5,000만</option>
+											<option value="6000">6,000만</option>
+											<option value="7000">7,000만</option>
+											<option value="8000">8,000만</option>
+											<option value="9000">9,000만</option>
+											<option value="10000;">10,000만</option>
+											<option value="12000">12,000만</option>
+											<option value="14000">14,000만</option>
+											<option value="18000">18,000만</option>
+											<option value="20000">20,000만</option>
+											<option value="25000">25,000만</option>
+											<option value="30000">30,000만</option>
+	                                     </select>
+		                        </div>
+		                     </div>             
+		                     <div class="col-md-2 col-sm-2 scrollpoint sp-effect1">
+		                     	<label class="pull-center" >
+		                     		~
+		                     	</label>
+		                     </div>
+				   	 	 	<div class="col-md-3 col-sm-3 contact-details scrollpoint sp-effect2">
+		                        <div class="media feature form-group"><!-- 시도 -->
+	                                      <select class="form-control" th:field="*{depositHigh}" >
+											<option value="0">전체</option>
+											<option value="100">100만</option>
+											<option value="500">500만</option>
+											<option value="1000">1,000만</option>
+											<option value="2000">2,000만</option>
+											<option value="3000">3,000만</option>
+											<option value="4000">4,000만</option>
+											<option value="5000">5,000만</option>
+											<option value="6000">6,000만</option>
+											<option value="7000">7,000만</option>
+											<option value="8000">8,000만</option>
+											<option value="9000">9,000만</option>
+											<option value="10000;">10,000만</option>
+											<option value="12000">12,000만</option>
+											<option value="14000">14,000만</option>
+											<option value="18000">18,000만</option>
+											<option value="20000">20,000만</option>
+											<option value="25000">25,000만</option>
+											<option value="30000">30,000만</option>
+	                                     </select>
+					            </div>
+		   	 	 		    </div>
+		   	 	 		 </div>
+		   	 	 		<div class="row">
+				   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media ">
+					                <a class="pull-left">
+					                    <i class="fa fa-money fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">월세</h3>
+					                </div>
+					            </div>
+					         </div>			                
+		                     <div class="col-md-3 col-sm-3 scrollpoint sp-effect1">
+		                        <div class="media feature form-group"><!-- 시도 -->
+	                                      <select class="form-control" th:field="*{monthPayLow}">
+												<option value="0">전체</option>
+												<option value="10">10만</option>
+												<option value="20">20만</option>
+												<option value="30">30만</option>
+												<option value="40">40만</option>
+												<option value="50">50만</option>
+												<option value="60">60만</option>
+												<option value="70">70만</option>
+												<option value="80">80만</option>
+												<option value="90">90만</option>
+												<option value="10">100만</option>
+												<option value="110">110만</option>
+												<option value="120">120만</option>
+												<option value="130">130만</option>
+												<option value="140">140만</option>
+												<option value="160">160만</option>
+												<option value="180">180만</option>
+												<option value="200">200만</option>
+												<option value="250">250만</option>
+	                                     </select>
+		                        </div>
+		                     </div>
+		                     <div class="col-md-2 col-sm-2 scrollpoint sp-effect1">
+		                     	~
+		                     </div>
+				   	 	 	<div class="col-md-3 col-sm-3 contact-details scrollpoint sp-effect2">
+		                        <div class="media feature form-group"><!-- 시도 -->
+	                                      <select class="form-control" th:field="*{monthPayHigh}">
+												<option value="0">전체</option>
+												<option value="10">10만</option>
+												<option value="20">20만</option>
+												<option value="30">30만</option>
+												<option value="40">40만</option>
+												<option value="50">50만</option>
+												<option value="60">60만</option>
+												<option value="70">70만</option>
+												<option value="80">80만</option>
+												<option value="90">90만</option>
+												<option value="10">100만</option>
+												<option value="110">110만</option>
+												<option value="120">120만</option>
+												<option value="130">130만</option>
+												<option value="140">140만</option>
+												<option value="160">160만</option>
+												<option value="180">180만</option>
+												<option value="200">200만</option>
+												<option value="250">250만</option>
+	                                     </select>
+					            </div>
+		   	 	 		    </div>
+		   	 	 		 </div>
+		   	 	 		 
+		   	 	 		 <div class="row media">
+		   	 	 			 <button type="button" class="btn btn-primary btn-block" id="collapseBtn">상세검색</button>
+		   	 	 		 </div>
+		   	 	 		 
+		   	 	 		 
+					  	<div class="collapse " id="collapseDetailSearch">
+		   	 	 			 <div class="row">
+					   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+						            <div class="media ">
+						                <a class="pull-left">
+						                    <i class="fa fa-clock-o fa-2x"></i>
+						                </a>
+						                <div class="media-body">
+						                    <h3 class="media-heading">방구조</h3>
+						                </div>
+						            </div>
+						         </div>			                
+			                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect2">
+			                        <div class="media feature form-group"><!-- 시도 -->
+		                                      <select class="form-control"  th:field="*{roomkind}">
+												<!--  th:field="*{roomkind}" -->
+												<option value="0">방구조</option>
+												<option value="1">원룸</option>
+												<option value="2">투룸</option>
+												<option value="3">쓰리룸 이상</option>
+		                                     </select>
+			                        </div>
+			                     </div>
+		                     </div>
+		   	 	 			 <div class="row">
+					   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					   	 	 		<label><input type="checkbox" value="" th:field="*{buildingCCTV}"/>건물 내 CCTV</label>
+					   	 	 	</div>
+					   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					   	 	 		<label><input type="checkbox" value="" th:field="*{outsideCCTV}"/>외부(근방100m) CCTV</label>
+					   	 	 	</div>
+					   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					   	 	 		<label><input type="checkbox" value="" th:field="*{park}"/>공원</label>
+					   	 	 	</div>
+		   	 	 			 </div>
+		   	 	 			 <div class="row">
+					   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					   	 	 		<label><input type="checkbox" value="" th:field="*{parkinglot}"/>주차장</label>
+					   	 	 	</div>
+					   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					   	 	 		<label><input type="checkbox" value="" th:field="*{pet}"/>애완동물</label>
+					   	 	 	</div>
+					   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					   	 	 		<label><input type="checkbox" value="" th:field="*{roomOption}" />풀옵션</label>
+					   	 	 		<!-- th:field="*{roomOption}"  -->
+					   	 	 	</div>
+		   	 	 			 </div>
+						  </div>
+	   	 	 		 </div>
+	   	 	 		 
+	   	 	 		 
+		   	 	 		 <div class="row media">
+		   	 	 			 <button type="submit" class="btn btn-success pull-right" id="searchBtn">검색</button>
+		   	 	 		 </div>
+	   	 	 	</section>
+   	 	 	</div>
+   	 	 	
+			<div class="pull-right">
+				<a th:href="@{/roomList.do}" href="rooList.html" hidden="true"> (임시)전체방보기 </a>
+			</div>
+		</form>
+	</div>
+	
+	</body>
+</html>

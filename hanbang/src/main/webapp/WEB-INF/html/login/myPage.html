@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+<head>
+<meta charset ="utf-8"/>
+<!-- <title>My Page</title> -->
+</head>
+<body>
+	<h1 layout:fragment="header" class="container theme-showcase">My Page</h1>
+	<div layout:fragment="content" class="container" >
+	
+		<div style="padding-top: 30px">
+		 	 <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2" style="padding-bottom: 10px">
+		       <div class="media feature">
+		           <a class="pull-left">
+		               <i class="fa fa-user fa-2x"></i>
+		           </a>
+		           <div class="media-body">
+		               <h3 class="media-heading">기본정보</h3>
+		           </div>
+		       </div>
+		    </div>
+	        <div class="col-md-8 col-sm-8 scrollpoint sp-effect1" style="margin-left: 30px">
+	           <div class="media feature">
+                    <div class="form-group">
+                        <label class="media-body">아이디 :</label>
+                        <p th:text="${session.user.userId}" style="margin-left: 70px"></p><br/>
+                        <label class="media-body" >이름     :</label>
+                        <p th:text="${session.user.name}"  style="margin-left: 70px"></p><br/>
+                        <label class="media-body">권한     :</label>
+                        <p th:text="${session.user.rigth}"  style="margin-left: 70px"></p><br/>
+                    </div>
+	           </div>
+	        </div>
+		</div>
+		
+		<div style="padding-top: 10px">
+		 	 <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+		       <div class="media feature">
+		           <a class="pull-left">
+		               <i class="fa fa-home fa-2x"></i>
+		           </a>
+		           <div class="media-body">
+		               <h3 class="media-heading">내매물</h3>
+		           </div>
+		       </div>
+		    </div>
+		 </div>
+		 <div style="padding-top: 10px">
+		    <div id="table" class="col-md-12 col-sm-12 contact-details scrollpoint sp-effect2" style="padding-left: 30px">
+		        <table class="table table-bordered table-striped">
+			       <thead>
+			          <tr style="font-size: large; color: black;">
+			            <td>보증금</td>
+			            <td>월세</td>
+			            <td>제목</td>
+			            <td>방종류</td>            
+			            <td>층</td>
+			            <td>수정</td>
+			            <td hidden="true">수정</td>
+			          </tr>
+			        </thead>
+			        <tbody>
+			          <tr th:if="${roomList.empty}">
+			            <td colspan="6" style="text-align: center;">
+			              	등록된 매물이 없습니다. 
+			            </td>
+			          </tr>
+			          <tr th:each="room : ${roomList}">
+			            <td th:text="${room.deposit}">1</td>   
+			            <td th:text="${room.monthPay}">1</td>   
+			            <td th:text="${room.title}">1</td>   
+			            <td th:text="${room.roomkind}">1</td>              
+			            <td th:text="${room.floor}">1</td>   
+			            <td><a>수정</a></td> 
+			            <td hidden="true" th:text="${room.id}"></td> 
+			          </tr>
+			        </tbody>
+			     </table>
+		    </div>
+		</div>
+		<script>
+		$("#table td").click(function() {
+			var row = $(this).parent().get(0);
+			var td = row.cells[6];
+			var idVal =  $(td).text();
+			
+      		$(location).attr("href", "/goDetailRoom.do?id="+idVal.toString());
+			
+		});	
+		</script>
+	</div>
+</body>
+</html>
+
+
+

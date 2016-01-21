@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  <head>
+    <title>Customer : Create</title>
+  </head>
+  <body>
+<!--     <h1 layout:fragment="header">Customer : Create</h1> -->
+    <div layout:fragment="content"
+        class="container">
+      <form id="customerForm"
+          th:action="@{/customerInsert.do}"
+          th:object="${customerVO}"
+          action="#"
+          method="post">
+        <div th:if="${#fields.hasErrors('*')}"
+            class="alert alert-error">
+          <p th:each="error : ${#fields.errors('*')}"
+              th:text="${error}">
+            Validation error
+          </p>
+        </div>
+        <div class="pull-right">
+          <a th:href="@{/customer.do}" href="customer.html">
+            Customers
+          </a>
+        </div>
+        <label for="summary">First name</label>
+        <input type="text"
+            th:field="*{firstName}"
+            th:class="${#fields.hasErrors('firstName')} ? 'field-error'"/>
+        <label for="text">Last Name</label>
+        <textarea
+            th:field="*{lastName}"
+            th:class="${#fields.hasErrors('lastName')} ? 'field-error'"></textarea>
+        <div class="form-actions">
+          <input type="submit" value="Create"/>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

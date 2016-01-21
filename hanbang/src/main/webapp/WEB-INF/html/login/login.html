@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  
+    <head>
+  	<meta charset ="utf-8"/>
+<!--     <title>Layout</title> -->
+  <!--   <link rel="stylesheet"
+      th:href="@{/css/bootstrap.min.css}"
+      href="../../css/bootstrap.min.css" />
+      
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"> </script>
+	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="https://code.jquery.com/jquery-ui.js"> </script> -->
+
+  </head>
+  <body>
+     <div class="wrapper">
+   	 	 <section id="support" class="doublediagonal">
+            <h1 layout:fragment="header">Login</h1>
+            <div layout:fragment="content" class="container">
+            
+<!--                 <div class="section-heading scrollpoint sp-effect3">
+                    <div class="divider"></div>
+                </div> -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="scrollpoint sp-effect1">
+                                <form id="loginForm"
+							          th:action="@{/login.do}"
+							          th:object="${userVO}"
+							          action="#"
+							          method="post">
+							     	<div th:if="${#fields.hasErrors('*')}"
+							            class="alert alert-error">
+							          <p th:each="error : ${#fields.errors('*')}"
+							              th:text="${error}">
+							            Validation error
+							          </p>
+							        </div>
+							        
+							        <div th:if="${loginError}" 
+							            class="alert alert-error">
+							          <p th:text="${'ID 혹은 Password가 잘못되었습니다.'}">
+							            Login Error
+							          </p>
+							        </div>
+							        
+                                   	<p style="margin-top: 20px">ID</p>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" th:field="*{userId}" autofocus="autofocus" />
+<!--                                         	th:class="${#fields.hasErrors('userId')} ? 'field-error' : 'form-control'"/>                               -->
+                                    </div>
+                                    <p>Password</p>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" th:field="*{pwd}"/>
+<!--                                         	th:class="${#fields.hasErrors('pwd')} ? 'field-error'"/>                                       -->
+                                    </div>
+                                    <div align="right">
+	                                    <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                                    </div>
+                                </form>
+                            </div>
+<!--                             <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2"> -->
+<!--                                 <div class="media"> -->
+<!--                                     <a class="pull-left" href="#" > -->
+<!--                                         <i class="fa fa-map-marker fa-2x"></i> -->
+<!--                                     </a> -->
+<!--                                     <div class="media-body"> -->
+<!--                                         <h4 class="media-heading">4, Some street, California, USA</h4> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                                 <div class="media"> -->
+<!--                                     <a class="pull-left" href="#" > -->
+<!--                                         <i class="fa fa-envelope fa-2x"></i> -->
+<!--                                     </a> -->
+<!--                                     <div class="media-body"> -->
+<!--                                         <h4 class="media-heading"> -->
+<!--                                             <a href="mailto:support@oleose.com">support@oleose.com</a> -->
+<!--                                         </h4> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                                 <div class="media"> -->
+<!--                                     <a class="pull-left" href="#" > -->
+<!--                                         <i class="fa fa-phone fa-2x"></i> -->
+<!--                                     </a> -->
+<!--                                     <div class="media-body"> -->
+<!--                                         <h4 class="media-heading">+82 234 567890</h4> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+      </div>
+  </body>
+</html>

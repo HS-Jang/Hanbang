@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  <head>
+  	<meta charset ="utf-8"/>
+  	<style>
+	 .map_wrap {position:relative;width:100%;height:350px;}
+	</style>
+  </head>
+  <body>
+  	<h1 layout:fragment="header">매물 지도보기</h1>
+    <div layout:fragment="content" class="container">
+    	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=9a7729a4a12199f30ac1b71964fff349&amp;libraries=services"></script>
+        <div class="map_wrap">
+		    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+		</div>
+        <p><input type="checkbox" id="chkTerrain" onclick="setOverlayMapTypeId()" /> 지형정보 보기</p> 
+        
+        <div class="form-actions" align="right">
+   	        <input id="returnVo" type="submit" value="매물 목록보기" class="btn btn-lg btn-info"/>
+       	</div> 
+        
+        <script th:inline="javascript">
+        /*<![CDATA[*/
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			    mapOption = { 
+			        center: new daum.maps.LatLng(37.51787427180, 127.101781315), // 지도의 중심좌표
+			        level: 5 // 지도의 확대 레벨
+			    };
+			
+			// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+			var map = new daum.maps.Map(mapContainer, mapOption); 
+			
+			// 두 지점사이의 거리를 계산하여 도보 시간을 계산한다.
+			var List = /*[[${rslt}]]*/;
+			var roomList = List.roomList;;
+			var lonOption = List.srchCond.longitude;
+			var lanOption = List.srchCond.latitude;
+			var timeOption = List.srchCond.time;
+			var transportation = List.srchCond.transportation;
+			
+// 			var lonOption = 127.101781315;
+// 			var lanOption = 37.51787427180;
+// 			var timeOption = 10;
+			
+			// 상세목록으로 넘겨줄 vo 재조립
+			//var RoomVOList = new Array();
+			// alert(RoomVOList);
+			
+			//var newCodeGroup = new Array();
+			//newCodeGroup.push(newCode);
+			
+			// 마커 이미지의 이미지 주소입니다
+			var imageSrc = "/img/hanbang/markerStar.png"; 
+		    var imageSize = new daum.maps.Size(24, 35); 
+		    var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize); 
+		    var marker = new daum.maps.Marker({
+		        map: map, // 마커를 표시할 지도
+		        position: new daum.maps.LatLng(lanOption, lonOption), // 마커를 표시할 위치
+		        image : markerImage // 마커 이미지 
+		    });
+			
+		    var RoomVOList = '';
+		    var j = 0;
+		    var cnt = 0;
+			if(timeOption != '소요시간' && lonOption != '' && lanOption != ''){	//검색조건으로 소요시간과 lonOption, lanOption이 모두 넘어온 경우 시간 계산한
+				for (var i = 0; i < roomList.length; i ++) {
+					var clickLine = new daum.maps.Polyline({
+			            // map: map, // 선을 표시할 지도입니다 
+			            path: [new daum.maps.LatLng(roomList[i].latitude, roomList[i].longitude), new daum.maps.LatLng(lanOption, lonOption)], 
+		        	});
+					var distance = Math.round(clickLine.getLength());
+					
+					if (transportation == '1'){
+						var walkTime = distance / 67;
+					} else if (transportation == '2'){
+						var walkTime = distance / 333;
+					} else {
+						var walkTime = null;
+					} 
+					
+	
+					// 소요시간 조건을 참고하여 해당 검색 매물만 지도에 표시한다.
+					if (walkTime <= timeOption){
+						var marker = new daum.maps.Marker({
+				        	map: map, // 마커를 표시할 지도
+				        	position: new daum.maps.LatLng(roomList[i].latitude, roomList[i].longitude), // 마커를 표시할 위치
+				        	title : roomList[i].title +" > " + walkTime.toFixed(2) + "분"// 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+				    	});
+						
+						//마커 클릭 이벤트 등록
+			            (function(marker, room) {
+			                daum.maps.event.addListener(marker, 'click', function() {
+			                    displayRoomInfo(room);
+			                });
+			            })(marker, roomList[i]);
+			            
+				    	// 지도에 마커를 표시합니다
+						marker.setMap(map);
+				    	
+				    	RoomVOList = RoomVOList + roomList[j].id+',';
+				    	//RoomVOList.push(roomList[i]);
+				    	//alert(RoomVOList);
+						j++;
+						cnt++;
+					}
+		 		}
+			}else{	//검색조건으로 소요시간과 lonOption, lanOption이 넘어오지 않은 경우 시간 계산 안함
+				for (var i = 0; i < roomList.length; i ++) {
+					var marker = new daum.maps.Marker({
+			        	map: map, // 마커를 표시할 지도
+			        	position: new daum.maps.LatLng(roomList[i].latitude, roomList[i].longitude), // 마커를 표시할 위치
+			        	title : roomList[i].title // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+			    	});
+					
+					//마커 클릭 이벤트 등록
+		            (function(marker, room) {
+		                daum.maps.event.addListener(marker, 'click', function() {
+		                    displayRoomInfo(room);
+		                });
+		            })(marker, roomList[i]);
+		            
+			    	// 지도에 마커를 표시합니다
+					marker.setMap(map);
+			    	
+			    	RoomVOList = RoomVOList + roomList[j].id+',';
+			    	//RoomVOList.push(roomList[i]);
+			    	//alert(RoomVOList);
+					j++;
+					cnt++;
+		 		}
+				
+			}
+			
+			if (cnt == 0){
+				$('#returnVo').hide();
+			}
+			
+			function displayRoomInfo(room) {
+				$(location).attr("href", "/goDetailRoomFromList.do?id="+room.id);
+			}
+			
+			/* var params = RoomVOList;
+			$.ajax({ 
+       	      url: "/returnRoomList.do", 
+       	      data: params, 
+       	      type: "post", 
+       	      dataType: "json", 
+       	      success: function(data, textStatus, XMLHttpRequest){
+       					
+       	      }, 
+       	      error: 
+       	      function(XMLHttpRequest, textStatus, errorThrown){ 
+       	      } 
+       	   }); */
+
+			 //리뷰등록 클릭 이벤트
+            $("#returnVo").click(function(){
+            	
+            	// $.post("/returnRoomList.do", RoomVOList);
+             	
+            	//var a = $.param(RoomVOList, true);
+	    		
+             	$(location).attr("href", "/returnRoomList.do?RoomVOList="+RoomVOList);
+	    		// $(location).attr("href", "/returnRoomList.do"+a);
+	    		//+$(addRoomForm).serialize());
+	    		// alert(returnRoomVO[0].latitude);
+			});	
+				
+			// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+			var mapTypeControl = new daum.maps.MapTypeControl();
+
+			// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+			map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
+
+			// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+			var zoomControl = new daum.maps.ZoomControl();
+			map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+			
+			// 지형정보 추가
+			var mapTypes = {
+			    terrain : daum.maps.MapTypeId.TERRAIN,    
+			}	
+			
+			function setOverlayMapTypeId() {
+			    var chkTerrain = document.getElementById('chkTerrain');  
+				// 지도 타입을 제거합니다
+			    for (var type in mapTypes) {
+			        map.removeOverlayMapTypeId(mapTypes[type]);    
+			    }
+			    // 지형정보 체크박스가 체크되어있으면 지도에 지형정보 지도타입을 추가합니다
+			    if (chkTerrain.checked) {
+			        map.addOverlayMapTypeId(mapTypes.terrain);    
+			    }		    
+			}  
+			
+			 /*]]>*/  	
+		</script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  <head>
+  	<meta charset ="utf-8"/>
+  <style>
+	 .map_wrap {position:relative;width:100%;height:350px;}
+  </style>
+  </head>
+  <body>
+  	<h1 layout:fragment="header">위치 선택</h1>
+    <div layout:fragment="content" class="container" >
+    
+    	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=9a7729a4a12199f30ac1b71964fff349&amp;libraries=services"></script>
+        <div class="map_wrap">
+		    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+		</div>
+        <p><input type="checkbox" id="chkTerrain" onclick="setOverlayMapTypeId()" /> 지형정보 보기</p> 
+        
+	   	<form id="customerForm"
+          th:action="@{/returnMapPoint.do}"
+          th:object="${roomVO}" 
+          action="#"
+          method="post">
+
+          <input hidden = "true" th:field="*{title}"/>
+          <input hidden = "true" th:field="*{roomkind}"/>
+          <input hidden = "true" th:field="*{monthPay}"/>
+          <input hidden = "true" th:field="*{dealKind}"/>
+          <input hidden = "true" th:field="*{telNum}"/>
+          <input hidden = "true" th:field="*{floor}"/>
+          <input hidden = "true" th:field="*{id}"/>
+          <input hidden = "true" th:field="*{userId}"/>
+          <input hidden = "true" th:field="*{detail}"/>
+          <input hidden = "true" th:field="*{status}"/>
+          <input hidden = "true" th:field="*{registerDate}"/>
+          <input hidden = "true" th:field="*{completeDate}"/>
+          <input hidden = "true" th:field="*{dealKind}"/>
+          <input hidden = "true" th:field="*{deposit}"/>
+          <input hidden = "true" th:field="*{price}"/>
+          <input hidden = "true" th:field="*{buildingKind}"/>
+          <input hidden = "true" th:field="*{parkinglot}"/>
+          <input hidden = "true" th:field="*{elevator}"/>
+          <input hidden = "true" th:field="*{buildingCCTV}"/>
+          <input hidden = "true" th:field="*{outsideCCTV}"/>
+          <input hidden = "true" th:field="*{park}"/>
+          <input hidden = "true" th:field="*{pet}"/>
+          <input hidden = "true" th:field="*{roomOption}"/>
+          <input hidden = "true" th:field="*{firstList}"/>
+
+          <input id="latitude" hidden ="true" type="text"
+            th:field="*{latitude}"/>
+          <input id="longitude" hidden ="true" type="text"
+          th:field="*{longitude}"/>
+          
+          <div class="scrollpoint sp-effect1">
+             <div class="media feature"><!-- 주소 -->
+                 <div class="form-group">
+                     <input id="address1" type="text"  class="form-control" th:field="*{address}" placeholder=""/> 
+                 </div>
+             </div>
+		  </div>
+          
+          <div class="form-actions" align="right">
+   	        <input type="submit" value="확인" class="btn btn-lg btn-info"/>
+       	  </div> 
+      	</form>
+	   	
+        <script>
+			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			    mapOption = { 
+			        center: new daum.maps.LatLng(37.51787427180, 127.101781315), // 지도의 중심좌표
+			        level: 5 // 지도의 확대 레벨
+			    };
+			
+			// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+			var map = new daum.maps.Map(mapContainer, mapOption); 
+			
+			// 포인트 -> 주소 변환
+			var geocoder = new daum.maps.services.Geocoder();
+			
+			function searchAddrFromCoords(coords, callback) {
+			    // 좌표로 주소 정보를 요청합니다
+			    geocoder.coord2addr(coords, callback);         
+			}
+			
+			
+			// 지도에 지형정보를 표시하도록 지도타입을 추가합니다
+			//map.addOverlayMapTypeId(daum.maps.MapTypeId.TERRAIN); 
+			
+			// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+			var mapTypeControl = new daum.maps.MapTypeControl();
+
+			// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+			// daum.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+			map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
+
+			// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+			var zoomControl = new daum.maps.ZoomControl();
+			map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+			
+			
+			// 지형정보 추가
+			var mapTypes = {
+			    terrain : daum.maps.MapTypeId.TERRAIN,    
+			}	
+			
+			function setOverlayMapTypeId() {
+			    var chkTerrain = document.getElementById('chkTerrain');  
+				// 지도 타입을 제거합니다
+			    for (var type in mapTypes) {
+			        map.removeOverlayMapTypeId(mapTypes[type]);    
+			    }
+			    // 지형정보 체크박스가 체크되어있으면 지도에 지형정보 지도타입을 추가합니다
+			    if (chkTerrain.checked) {
+			        map.addOverlayMapTypeId(mapTypes.terrain);    
+			    }		    
+			}  
+			
+			// 지도를 클릭한 위치에 표출할 마커입니다
+			var marker = new daum.maps.Marker({ 
+			    // 지도 중심좌표에 마커를 생성합니다 
+			    position: map.getCenter() 
+			}); 
+			// 지도에 마커를 표시합니다
+			//marker.setMap(map); 
+			
+			
+			// 지도에 클릭 이벤트를 등록합니다
+			// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+			daum.maps.event.addListener(map, 'click', function(mouseEvent) {        
+				marker.setMap(map);
+			    // 클릭한 위도, 경도 정보를 가져옵니다 
+			    var latlng = mouseEvent.latLng; 
+			    
+			    // 마커 위치를 클릭한 위치로 옮깁니다
+			    marker.setPosition(latlng);
+			    
+			    searchAddrFromCoords(mouseEvent.latLng, function(status, result) {
+			        if (status === daum.maps.services.Status.OK) {
+			            var resultDiv = document.getElementById('address'); 
+			            // document.getElementById('address').value = result[0].fullName+''; 
+			            document.getElementById('address1').value = result[0].fullName+'';
+			        }   
+			    });
+			    
+			    var resultLon = document.getElementById('longitude1');
+			    document.getElementById('longitude').value = latlng.getLng()+''; 
+			    
+			    var resultLat = document.getElementById('latitude');
+			    document.getElementById('latitude').value = latlng.getLat()+''; 
+			});
+			
+		</script>
+    </div>
+</body>
+</html>

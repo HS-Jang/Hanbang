@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  <head>
+  	<meta charset ="utf-8"/>
+<!--     <title>Layout</title> -->
+  </head>
+  <body>
+  	 <h1 layout:fragment="header">리뷰 등록</h1>
+     <div id="addReviewDIV" class="container" layout:fragment="content" style="padding-top: 20px">
+	     <form id="addReviewForm"
+          th:action="@{/insertReview.do}" th:object="${reviewVO}"  action="#"  method="post">
+					     
+<!-- 			<input hidden = "true" th:field="*{id}"/> -->
+<!-- 			<input hidden = "true" th:field="*{registerDate}"/> -->
+<!-- 			<input hidden = "true" th:field="*{completeDate}"/> -->
+		     
+		       <div class="wrapper">
+		   	 	 <section id="support" class="doublediagonal">
+	   	 	 		<div class="container">
+		   	 	 		<div class="row">
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect2">
+		                        <div class="media feature"><!-- 동네 -->
+	                                 <div class="form-group">
+	                                     <input type="text" class="form-control" th:field="*{subAddr}" style="color:black;" readonly="readonly"/> 
+	                                 </div>
+		                        </div>
+		                     </div>   	 	  
+				   	 	 	 <div class="col-md-3 col-sm-3 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+					                <a class="pull-left">
+					                    <i class="fa fa-tag fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">제목</h3>
+					                </div>
+					            </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect2">
+		                        <div class="media feature"><!-- 제목 -->
+	                                 <div class="form-group">
+	                                     <input type="text" class="form-control" th:field="*{title}" style="color:black;"/> 
+	                                 </div>
+		                        </div>
+		                     </div>   	 	  
+				   	 	 	 <div class="col-md-3 col-sm-3 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+	                                 <a class="pull-left" >
+	                                     <i class="fa fa-pencil fa-2x"></i>
+	                                 </a>
+	                                 <div class="media-body">
+	                                     <h3 class="media-heading">내용</h3>
+	                                 </div>
+	                             </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <div class="media feature"> <!-- 내용-->
+									<div class="form-group">
+	                                     <textarea cols="30" rows="10" class="form-control" th:field="*{contents}" style="color:black;"></textarea>  
+	                                </div>
+	                                <div align="right">
+	                                	<button id="btnSubmit" type="submit" class="btn btn-primary btn-lg">등록</button>
+	                                </div>
+		                        </div>
+		                     </div>
+				        </div>
+			        </div>
+	            </section>
+            </div>
+        </form>
+          
+      	<script th:inline="javascript">
+        /*<![CDATA[*/
+
+      	/*]]>*/  	
+		</script>
+      </div>
+  </body>
+</html>

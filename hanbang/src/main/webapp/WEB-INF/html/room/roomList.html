@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="HeaderLayout">
+<head>
+<meta charset="utf-8" />
+<title>Layout</title>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+
+	$(document).ready(function() {
+		$("button").each(function(index) {
+			$(this).click((function(index) {
+				return function() {
+					var tmpStr = "#detailConditions" + (index);
+					$(tmpStr).collapse('toggle');
+				}
+			})(index));
+		});
+
+	$("#table td").click(
+			function() {
+
+			
+				var row = $(this).parent().get(0);
+				var td = row.cells[0];
+				var idVal = $(td).text();
+			
+				var chk = $(td).find("#move");
+				console.log(chk);
+				if($(td).hasClass("move")){
+				 $(location).attr("href",
+						"/goDetailRoom.do?id=" + idVal.toString()); }
+
+			});
+	});
+
+	/*]]>*/
+</script>
+
+
+
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<p th:text="${session}"></p>
+		<p th:text="${session.userId}"></p>
+		<p th:text="${session.name}"></p>
+		<p th:text="${session.rigth}"></p>
+		<h1 layout:fragment="header" align="center"><i class="fa fa-home"></i>  방 목록  </h1>
+		<form id="listForm" th:object="${roomVO}" action="#" method="post">
+			<div data-role="page" id="list" data-url="list"
+				class="ui-page ui-body-c ui-page-active">
+				<div layout:fragment="content" class="container">
+					<div th:if="${room.empty}">
+						<label>There are No Room.</label>
+					</div>
+					<div class="btn btn-primary btn-block" style="width: 400"
+						th:each="room,iterStat : ${room}">
+						<nav class="navbar">
+							<label th:text="${room.deposit}+'/'"></label> <label
+								th:text="${room.monthPay}"></label><br></br> <label
+								th:text="${room.title}"></label> <label
+								th:text="'('+${room.roomkind}+')'+${room.floor}+'층'"
+								th:text-align="center" style="backgroud-color: #BDBDBD"></label>
+							<label style="position:absolute;top:0; right:10px; bottom:0;">
+								<button  style="backgroud-color: #BDBDBD; border:none ; color:#BDBDBD" 
+									 name="collapseBtn"
+									th:id="'collapseBtn'+ ${iterStat.count}"><i class="fa fa-home"></i> 
+								</button>
+							</label>
+							<div th:id="'detailConditions'+ ${iterStat.count}"
+								class="collapse" aria-expanded="false" style="height: 1px;">
+								<ul class="nav navbar-nav">
+									<li>
+										<div id="table"
+											class="col-md-12 col-sm-12 contact-details scrollpoint sp-effect2"
+											style="padding-left: 30px">
+											<table>
+												<tbody>
+													<tr
+														style="font-size: small; color: black; border-width: 0; text-align: left">
+														<td class="move" th:text="${room.id}" style="color: #BDBDBD"></td>
+													</tr>
+													<tr></tr>
+													<tr
+														style="font-size: small; color: black; border-width: 0; text-align: left">
+														<td th:text="'■ '+${room.dealKind}"></td>
+													</tr>
+													<tr
+														style="font-size: small; color: black; border-width: 0; text-align: left">
+														<td th:text="'■ 세부설명:'+${room.detail}"></td>
+													</tr>
+													<tr
+														style="font-size: small; color: black; border-width: 0; text-align: left">
+														<td th:text="' ■ 주소: '+ ${room.address}"></td>
+													</tr>
+													<tr
+														style="font-size: small; color: black; border-width: 0; text-align: left">
+														<td th:text="' ■ 주차장: '+${room.parkinglot}"></td>
+													</tr>
+													<tr
+														style="font-size: small; color: black; border-width: 0; text-align: left">
+														<td th:text="'■ 건물CCTV: '+${room.buildingCCTV}"></td>
+													</tr>
+													<tr
+														style="font-size: small; color: black; border-width: 0; text-align: left">
+														<td th:text="' ■ 외부CCTV: '+${room.outsideCCTV}"></td>
+													</tr>
+													<tr
+														style="font-size: small; color: black; border-width: 0; text-align: left">
+														<td th:text="' ■ 공원 :'+${room.park}"></td>
+													</tr>
+
+												</tbody>
+											</table>
+
+										</div>
+									</li>
+								</ul>
+							</div>
+						</nav>
+					</div>
+
+				</div>
+			</div>
+		
+		</form>
+
+	</div>
+
+</body>
+
+
+
+</html>

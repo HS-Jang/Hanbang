@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  <head>
+    <title>Customer : View all</title>
+  </head>
+  <body>
+<!--     <h1 layout:fragment="header">Customer : View all</h1> -->
+    <div layout:fragment="content" class="container">
+      <div class="pull-right">
+        <a href="customerForm.html" th:href="@{/customerform.do}">Create Customer!!!!!!!!!!!!</a>
+      </div>
+      	 <p th:text="${session}"></p>
+	 	<p th:text="${session.userId}"></p>
+	 	<p th:text="${session.name}"></p>
+	 	<p th:text="${session.rigth}"></p>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <td>ID</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${customer.empty}">
+            <td colspan="3">
+              No Customer
+            </td>
+          </tr>
+          <tr th:each="customer : ${customer}">
+            <td th:text="${customer.id}">1</td>
+            <td th:text="${customer.firstName}">name           
+            </td>
+            <td>
+              <a href="view.html"
+                  th:href="@{'/' + ${customer.id}}"
+                  th:text="${customer.lastName}">
+                The summary
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

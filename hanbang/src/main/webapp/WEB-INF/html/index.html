@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>HANBANG</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link href="css/stylish-portfolio.css" rel="stylesheet"/>
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                <a href="#top">HAN BANG</a>
+            </li>
+            <li th:if="${session.user}">
+		          <a th:href="@{/moveMyPage.do}" href="/login/login">내정보</a>
+	        </li>
+            <li>
+                <a href="/roomSearch.do">방검색</a>
+            </li>
+            <li>
+                <a href="/addRoomPage.do" >방등록</a>
+            </li>
+            <li>
+                <a href="/moveReviewPage.do">동네이야기</a>
+            </li>
+            <li>
+                <a href="#services">한방서비스</a>
+            </li>
+            <li>
+	     	     <a th:if="${session.user == null}" 
+	             th:href="@{/moveLoginPage.do}" href="/login/login"> 로그인</a>
+       		 </li>
+       		 <li>
+		          <a th:if="${session.user}" 
+		             th:href="@{/logout.do}" href="/login/login"> 로그아웃</a>
+	         </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <h1>HAN BANG</h1>
+            <h3>모든 방을 한방에!</h3>
+            <br/>
+            <a href="/roomSearch.do" class="btn btn-dark btn-lg" style="margin-bottom: 10px">방 검색</a>
+            <a href="/addRoomPage.do" class="btn btn-dark btn-lg" style="margin-bottom: 10px">방 등록</a>
+            <a href="/moveReviewPage.do" class="btn btn-dark btn-lg" style="margin-bottom: 10px">동네이야기</a>
+            <a th:href="@{/moveMyPage.do}" th:if="${session.user}" class="btn btn-dark btn-lg" style="margin-bottom: 10px">내정보</a>
+        </div>
+    </header>
+
+    <!-- About -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>최초, 최고의 시간 기반 방 검색을 경험하세요!</h2>
+                    <p class="lead">Experience the ultimate time-based home search system!</p>
+                    <p class="lead"><a th:if="${session.user == null}" th:href="@{/moveLoginPage.do}" href="/login/login">지금 바로 로그인</a></p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Services -->
+    <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+    <section id="services" class="services bg-primary">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>한방 서비스</h2>
+                    <hr class="small"/>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-search-plus fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>방 검색</strong>
+                                </h4>
+                                <p>전국 매물을 시간을 포함한 다양한 조건으로 찾아보세요!</p>
+                                <a href="/roomSearch.do" class="btn btn-dark btn-lg">바로가기</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-home fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>방 등록</strong>
+                                </h4>
+                                <p>쉽고, 빠르게 내 매물을 등록합니다.</p>
+                                <a href="/addRoomPage.do" class="btn btn-dark btn-lg">바로가기</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-comments fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>동네이야기</strong>
+                                </h4>
+                                <p>궁금한 동네의 소식을 듣고, 내가 살고있는 동네의 정보를 공유합니다.</p>
+                                <a href="/moveReviewPage.do" class="btn btn-dark btn-lg">바로가기</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-user fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>내정보</strong>
+                                </h4>
+                                <p>내가 등록한 매물에 대한 정보를 한눈에 확인하고 수정할 수 있습니다.</p>
+                                <a th:href="@{/moveMyPage.do}" th:if="${session.user}" class="btn btn-dark btn-lg">바로가기</a>
+                                <a th:href="@{/moveLoginPage.do}" th:if="${session.user==null}" class="btn btn-dark btn-lg">로그인하세요!</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+
+    <!-- Map -->
+<!--     <section id="contact" class="map"> -->
+<!--         <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe> -->
+<!--         <br/> -->
+<!--         <small> -->
+<!--             <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a> -->
+<!--         </small> -->
+<!--         </iframe> -->
+<!--     </section> -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h4><strong>HAN BANG</strong>
+                    </h4>
+                    <p>서울 송파구 신천동 삼성 SDS타워<br/>WEST CAMPUS 10번회의실</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-phone fa-fw"></i> (123) 456-7890</li>
+                        <li><i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:hanbangService@samsung.com">hanbang.solution@samsung.com</a>
+                        </li>
+                    </ul>
+                    <br/>
+                    <ul class="list-inline">
+                        <li>
+                            <a href="https://www.facebook.com/samsungsds"><i class="fa fa-facebook fa-fw fa-3x"></i></a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/ICTstory"><i class="fa fa-twitter fa-fw fa-3x"></i></a>
+                        </li>
+                        <li>
+                            <a href="http://www.sds.samsung.co.kr/"><i class="fa fa-dribbble fa-fw fa-3x"></i></a>
+                        </li>
+                    </ul>
+                    <hr class="small"/>
+                    <p class="text-muted">Copyright &copy; Samsung SDS 2015</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    </script>
+
+</body>
+
+</html>

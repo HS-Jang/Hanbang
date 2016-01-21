@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  
+  <head>
+  	<meta charset ="utf-8"/>
+  	<title>한방-메인화면</title>
+  </head>
+  
+  <body>  	 
+  	<div layout:fragment="header" align="center">
+  		<img src="/img/hanbang/hanbang-home1.png" style="margin-top: 15px" class="scrollpoint sp-effect1" width="90%" height="90%"/>
+  	</div>
+     <div class="container" layout:fragment="content" >
+	     <div class="wrapper">
+	   	 	 <section id="support" class="doublediagonal">
+	            <div class="container">
+	                <div class="row">
+	                    <div class="col">
+	                        <div class="row" style="padding-bottom: 20px">
+	                            <div class="col-md-12 col-sm-12 scrollpoint sp-effect1">
+	                                    <a href="/roomSearch.do" class="btn btn-primary btn-lg btn-block" >매물 조회</a>
+	                            </div>
+	                        </div>
+	                        <div class="row" style="padding-bottom: 20px">
+	                            <div class="col-md-12 col-sm-12 scrollpoint sp-effect1">
+	                                    <a href="/addRoomPage.do" class="btn btn-primary btn-lg btn-block" >매물 등록</a>
+	                            </div>
+	                        </div>
+	                        <div class="row">
+	                            <div class="col-md-12 col-sm-12 scrollpoint sp-effect1">
+	                                    <a href="/moveReviewPage.do" class="btn btn-primary btn-lg btn-block" >동네Talk</a>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </section>
+        </div>
+      </div>
+      <script>
+			$(document).ready(function(){
+				
+				$("#btnSubmit1").click(function(){
+					
+				});
+				
+			});
+			$(document).ready(function(){
+				
+				$("#btnSubmit2").click(function(){
+					
+				});
+			});
+		</script>
+  </body>
+</html>

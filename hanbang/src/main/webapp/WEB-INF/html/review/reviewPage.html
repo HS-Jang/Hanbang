@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  <head>
+  	<meta charset ="utf-8"/>
+  	<style>
+	 .map_wrap {position:relative;width:100%;height:350px;}
+	 #centerAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background: rgba(255,255,255,0.8);z-index: 1;padding:5px;font-weight: bold;font-size:14px;}
+	</style>
+  	
+  </head>
+  <body>
+  	<h1 layout:fragment="header">동네이야기</h1>
+    <div layout:fragment="content" class="container">
+     <p style="color: red; text-align: right;">※ 지도를 움직여 다른 동네의 정보를 확인하세요!</p>
+		<div class="map_wrap">
+		    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+		    <div id="centerAddr"></div>
+		</div>
+		
+        <p><input type="checkbox" id="chkTerrain" onclick="setOverlayMapTypeId()" /> 지형정보 보기 </p> 
+	   	
+          
+<!--           <input id="latitude" type="text"/>
+          <input id="longitude" type="text"/>
+
+      <button onclick="showAddr()">클릭</button> -->
+
+		<div style="padding-top: 30px">
+			 	 <div class="contact-details scrollpoint sp-effect2">
+			       <div class="media feature">
+			           <a class="pull-left">
+			               <i class="fa fa-pencil-square-o fa-2x"></i>
+			           </a>
+			           <div class="media-body" id="reviewHeader">
+			               <h3 class="media-heading">리뷰</h3>
+			           </div>
+			       </div>
+			    </div>
+			    <div class="contact-details scrollpoint sp-effect2" style="padding-top:10px" id="reviewTable">
+			        <table class="table table-bordered table-striped">
+				       <thead>
+				          <tr>
+				            <td align="center" width="30%">제목</td>
+				            <td align="center" width="40%">내용</td>
+				            <td align="center">등록자</td>
+				            <td align="center">등록일시</td>
+				            <td hidden="true" >ID</td>
+				          </tr>
+				        </thead>
+				        <tbody id='tbody'>
+				          <tr th:if="${rslt.reviewList.empty}">
+				            <td colspan="6" style="text-align: center;">
+				              	등록된 리뷰가 없습니다. 
+				            </td>
+				          </tr>
+				           
+				        </tbody>
+				     </table>
+				     
+	
+			    </div>
+				     <div id="configDiv" th:fragment="configFragment" >
+					     <div class="scrollpoint sp-effect1" th:if="${session.user}" >
+	 		  				<a class="btn btn-primary btn-lg fa fa-pencil fa-2x pull-right" id="addReview">Add</a>
+	     				 </div>
+					 </div>
+		    	</div>
+      
+     <script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=9a7729a4a12199f30ac1b71964fff349&amp;libraries=services"></script>
+  
+      <script th:inline="javascript">
+      /*<![CDATA[*/
+                 
+                 //리뷰등록 클릭 이벤트
+                $("#addReview").click(function(){
+                	var subAddr = document.getElementById('centerAddr').innerHTML;
+		    		$(location).attr("href", "/moveAddReviewPage.do?subAddr="+subAddr);
+		    		//$(location).attr("href", "/moveAddReviewPage.do?subAddr="+subAddr);
+				});	
+                
+                $("#test").click(function(){
+                	alert('111');
+                	$(location).attr("href", "/login/login.html");
+                //	$('#tbody2').html('ss');
+				});	
+	
+				var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+				    mapOption = { 
+				        center: new daum.maps.LatLng(37.51787427180, 127.101781315), // 지도의 중심좌표
+				        level: 5 // 지도의 확대 레벨
+				    };
+				
+				// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+				var map = new daum.maps.Map(mapContainer, mapOption);
+	
+				//받아올 roomList
+				var rslt = /*[[${rslt}]]*/;
+				var roomList = rslt.roomList;
+				var srchCond = rslt.srchCond;
+				var lon = srchCond.lon;
+				var lat = srchCond.lat;
+				var time = srchCond.time;
+				
+
+				// alert(lon + " : " + lat +  " : " + time);
+	
+			
+				// 마커 이미지의 이미지 주소입니다
+				var imageSrc = "/img/hanbang/markerStar.png"; 
+				
+				
+				for (var i = 0; i < roomList.length; i ++) {
+					//alert(roomList[i].title + " : " + roomList[i].latitude + " : " + roomList[i].longitude);
+				    // 마커 이미지의 이미지 크기 입니다
+				    var imageSize = new daum.maps.Size(24, 35); 
+				    
+				    // 마커 이미지를 생성합니다    
+				    var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize); 
+				    
+				    // 마커를 생성합니다
+				    var marker = new daum.maps.Marker({
+				        map: map, // 마커를 표시할 지도
+				        position: new daum.maps.LatLng(roomList[i].latitude, roomList[i].longitude), // 마커를 표시할 위치
+				        title : roomList[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+				        image : markerImage // 마커 이미지 
+				    });
+				    
+				    //마커 클릭 이벤트 등록
+		            (function(marker, room) {
+		                daum.maps.event.addListener(marker, 'click', function() {
+		                    displayRoomInfo(room);
+		                });
+		            })(marker, roomList[i]);
+				}
+				
+				//마커 클릭 이벤트
+				function displayRoomInfo(room) {
+					$(location).attr("href", "/goDetailRoomFromList.do?id="+room.id);
+				}
+				
+				
+				// 포인트 -> 주소 변환
+				var geocoder = new daum.maps.services.Geocoder();
+				
+				function searchAddrFromCoords(coords, callback) {
+				    // 좌표로 주소 정보를 요청합니다
+				    geocoder.coord2addr(coords, callback);         
+				}
+				
+				
+				// 지도에 지형정보를 표시하도록 지도타입을 추가합니다
+			//	map.addOverlayMapTypeId(daum.maps.MapTypeId.TERRAIN); 
+				
+				// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+				var mapTypeControl = new daum.maps.MapTypeControl();
+	
+				// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+				// daum.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+				map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
+	
+				// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+				var zoomControl = new daum.maps.ZoomControl();
+				map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+				
+				
+				// 지형정보 추가
+				var mapTypes = {
+				    terrain : daum.maps.MapTypeId.TERRAIN,    
+				}	
+				
+				function setOverlayMapTypeId() {
+				    var chkTerrain = document.getElementById('chkTerrain');  
+					// 지도 타입을 제거합니다
+				    for (var type in mapTypes) {
+				        map.removeOverlayMapTypeId(mapTypes[type]);    
+				    }
+				    // 지형정보 체크박스가 체크되어있으면 지도에 지형정보 지도타입을 추가합니다
+				    if (chkTerrain.checked) {
+				        map.addOverlayMapTypeId(mapTypes.terrain);    
+				    }		    
+				}  
+				
+				var marker = new daum.maps.Marker({}), // 클릭한 위치를 표시할 마커입니다
+			    infowindow = new daum.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+				
+			    
+				 // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+				    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+				
+
+				
+				// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+				daum.maps.event.addListener(map, 'idle', function() {
+				    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+				});
+				
+				 // 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+			    function displayCenterInfo(status, result) {
+			        if (status === daum.maps.services.Status.OK) {
+			            var infoDiv = document.getElementById('centerAddr');
+			            infoDiv.innerHTML = result[0].fullName;
+			            $("#reviewHeader").empty();
+			            $("#reviewHeader").append("<h3 class='media-heading'>"+"리뷰-" + infoDiv.innerHTML +"</h3>")
+			        }    
+			        refReviews();	//★★★★★★★★★★★★★★ Ajax통신으로 리뷰정보 다시 가져옴★★★★★★★★★★★★★
+			    }
+				 
+				function showAddr(){
+					var infoDiv = document.getElementById('centerAddr');
+				}
+				
+				//★★★★★★★★★★★★★★ Ajax통신으로 리뷰정보 다시 가져옴★★★★★★★★★★★★★
+				//작업중
+                function refReviews() { 
+             	   var subAddr = document.getElementById('centerAddr').innerHTML;
+             	   var params = 
+             	   "subAddr=" + subAddr;
+             	   
+             	   $.ajax({ 
+             	      url: 
+             	      "/refReviewPage.do", 
+             	      data:params, 
+             	      type: 
+             	      "post", 
+             	      dataType: 
+             	      "json", 
+             	      success: 
+             	      function(data, textStatus, XMLHttpRequest){
+             	    	  var reviewList = data.reviewList;
+             	    	  $("#tbody").empty();
+             	    	 for ( var idx in data.reviewList) {
+             	    		 
+             				$('<tr>').append($('<td>').html("<p>"+ reviewList[idx].title + "</p>"))
+             						 .append($('<td>').html("<p>"+ reviewList[idx].contents + "</p>"))
+             						 .append($('<td>').html("<p>"+ reviewList[idx].userId + "</p>"))
+             						 .append($('<td>').html("<p>"+ reviewList[idx].insertTime + "</p>"))
+             						 .appendTo('#tbody');
+             			}//end for
+
+             	      }, 
+             	      error: 
+             	      function(XMLHttpRequest, textStatus, errorThrown){ 
+             	       //  selectInfoCallback(XMLHttpRequest, textStatus); 
+             	      } 
+             	   });
+             	}
+				
+			/*]]>*/                       
+		</script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+  <title>HANBANG</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=2"/>
+  
+  <!-- 
+  <link rel="stylesheet"
+    th:href="@{/css/bootstrap.min.css}"
+    href="../../css/bootstrap.min.css"/>
+  -->
+  
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  
+  <!-- 
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"> </script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  -->
+	
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  
+  <link rel="stylesheet" href="css/animate.css"/>
+  <link rel="stylesheet" href="css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="css/slick.css"/>
+  <link rel="stylesheet" href="js/rs-plugin/css/settings.css"/>
+  <link rel="stylesheet" href="css/bootstrap-slider.css"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+  
+  <script src="js/bootstrap-slider.min.js"></script>
+  
+  
+  <script src="js/slick.min.js"></script>
+  <script src="js/placeholdem.min.js"></script>
+  <script src="js/rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
+  <script src="js/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+  <script src="js/waypoints.min.js"></script>
+  <script src="js/scripts.js"></script>
+</head>
+<body>
+
+<nav class = "navbar navbar-default">
+  <div class="container">
+	  <div th:if="${session.user}" style="text-align: right;">
+         Welcome &nbsp;<a th:text="${session.user.name}" th:href="@{/moveMyPage.do}"></a>
+    </div>
+    
+    <div class="navbar-header" id="mainHeader">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">                       
+		  <span class="fa fa-bars fa-lg"></span>
+      </button>
+      <a class="navbar-brand" href="/">HAN BANG</a>
+    </div>
+    
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a th:href="@{/addRoomPage.do}" href="/room/addRoom">방등록</a></li>
+        <li><a th:href="@{/roomSearch.do}" href="/room/roomSearch">방조회</a></li>
+        <li><a th:href="@{/moveReviewPage.do}">동네이야기</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a th:if="${session.user == null}" 
+             th:href="@{/moveLoginPage.do}" href="/login/login"><span class="glyphicon glyphicon-log-in"></span> 로그인</a>
+        </li>
+        <li>
+          <a th:if="${session.user}" 
+             th:href="@{/logout.do}" href="/login/login"><span class="glyphicon glyphicon-log-out"></span> 로그아웃</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="wrap">
+<h1 layout:fragment="header" class="container theme-showcase" style="color:#337ab7;">Layout</h1>
+<div layout:fragment="content" class="container theme-showcase" >
+	  Fake content
+</div>
+  <div class="footer" style="margin:0 auto; padding-top:50px; width:500px; height:100px;">
+      <div class="row">
+          <div class="col-lg-10 col-lg-offset-1 text-center">
+         	 <hr class="large"/>
+              <h4><strong>Han Bang</strong>
+              </h4>
+              <p>서울 송파구 신천동 삼성 SDS타워<br/>WEST CAMPUS 10번회의실</p>
+              <ul class="list-unstyled">
+                  <li><i class="fa fa-phone fa-fw"></i> (123) 456-7890</li>
+                  <li><i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:hanbangService@samsung.com">hanbang.service@samsung.com</a>
+                  </li>
+              </ul>
+              <hr class="small"/>
+              <p class="text-muted">Copyright &copy; Samsung SDS 2015</p>
+          </div>
+      </div>
+  </div>
+  </div>
+	<script>
+		$(document).ready(function(){
+			$("#test").click(
+				function(){
+					$("#test").toggleClass("collapsed");
+					if($("#test").hasClass("collapsed")){
+						$(this).removeClass("collapsed");
+					}else{
+						$(this).hasClass("collapsed");
+					}
+					
+					$("#test2").toggleClass("in");
+					if($("#test2").hasClass("in")){
+						$("#test2").removeClass("in");
+					}else{
+						$("#test2").addClass("in");
+					}
+					
+				});
+		});
+	</script>
+</body>
+</html>

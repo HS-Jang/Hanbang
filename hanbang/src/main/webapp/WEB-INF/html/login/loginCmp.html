@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+<head>
+<meta charset ="utf-8"/>
+<!-- <title>Insert title here</title> -->
+</head>
+<body>
+	<h1 layout:fragment="header" class="container theme-showcase">로그인 완료!!</h1>
+	<div layout:fragment="content" class="container" >
+	 	
+	 	<p th:text="${session}"></p>
+	 	<p th:text="${session.user}"></p>
+	 	<p th:text="${session.user.userId}"></p>
+	 	<p th:text="${session.user.name}"></p>
+	 	<p th:text="${session.user.rigth}"></p>
+	</div>
+</body>
+</html>

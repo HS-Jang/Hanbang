@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="HeaderLayout">
+  
+  <head>
+  	<meta charset ="utf-8"/>
+<!--     <title>Layout</title> -->
+
+  </head>
+  <body>
+  	 <h1 layout:fragment="header">매물 상세보기</h1>
+     <div class="container" layout:fragment="content">
+	     <form id="detailRoomForm"
+          th:object="${roomVO}"
+          action="#"
+          method="get">
+          	
+          	<input hidden = "true" th:field="*{id}"/>
+          	<input hidden = "true" th:field="*{userId}"/>
+			<input hidden = "true" th:field="*{registerDate}"/>
+			<input hidden = "true" th:field="*{completeDate}"/>
+          	
+		     <div class="wrapper">
+		   	 	 <section id="support" class="doublediagonal">
+	   	 	 		<div class="container">
+		   	 	 		<div class="row">
+				   	 	 	<div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media">
+					                <a class="pull-left">
+					                    <i class="fa fa-map-marker fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading" >위치</h3>
+					                </div>
+					            </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <div class="media feature"><!-- 위치 -->
+		                        	 <a class="pull-left" id="popMap" >
+	                                    <i class="fa fa-map-marker fa-2x"></i>
+	                                 </a>
+	                                 <div class="media-body">
+	                                     <input readonly="true" type="text" class="form-control" th:field="*{address}" style="color:black;"/>
+	                                 </div>
+	                                  <input hidden ="true" th:field="*{longitude}"></input>
+	                                 <input hidden ="true" th:field="*{latitude}"></input>
+		                       </div>
+		                     </div>
+				   	 	 	 <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+					                <a class="pull-left">
+					                    <i class="fa fa-home fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">방 구조</h3>
+					                </div>
+					            </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <div class="media feature"><!-- 방구조 -->
+	                                 <div class="form-group">
+	                                      <select readonly="true" type="text" class="form-control" th:field="*{roomkind}" style="color:black;"> 
+	                                     	<option value="0" class="" >전체</option>
+										    <option value="1" selected="selected" class="" >원룸</option>
+										    <option value="2" class="" >투룸</option>
+										    <option value="3" class="" >쓰리룸이상</option>
+	                                     </select>
+	                                 </div>
+		                        </div>
+		                     </div>
+				   	 	 	 <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+					                <a class="pull-left">
+					                    <i class="fa fa-money fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">월세</h3>
+					                </div>
+					            </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect2">
+		                        <div class="media feature"><!-- 월세 -->
+	                                 <div class="form-group">
+	                                     <input readonly="true" type="text" class="form-control" th:field="*{monthPay}" style="color:black;"/> 
+	                                 </div>
+		                        </div>
+		                     </div>
+		                     <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+					                <a class="pull-left">
+					                    <i class="fa fa-money fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">보증금</h3>
+					                </div>
+					            </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect2">
+		                        <div class="media feature"><!-- 보증금 -->
+	                                 <div class="form-group">
+	                                     <input readonly="true" type="text" class="form-control" th:field="*{deposit}" style="color:black;"/> 
+	                                 </div>
+		                        </div>
+		                     </div>
+			   	 	    	 <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+					                <a class="pull-left">
+					                    <i class="fa fa-shopping-cart fa-2x"></i>
+					                </a>
+					                <div class="media-body">
+					                    <h3 class="media-heading">거래종류</h3>
+					                </div>
+					            </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect2">
+		                        <div class="media feature"><!-- 거래종류 -->
+                                	 <div class="form-group">
+	                                     <select readonly="true" type="text"  class="form-control" th:field="*{dealKind}" style="color:black;"> 
+	                                     	<option value="전체" class="" >전체</option>
+										    <option value="전세" class="" >전세</option>
+										    <option value="월세" selected="selected" class="" >월세</option>
+										    <option value="반월세" class="" >반월세</option>
+	                                     </select>
+	                                 </div>	
+		                        </div>
+		                     </div>
+				   	 	 	 <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+	                                 <a class="pull-left" >
+	                                     <i class="fa fa-phone fa-2x"></i>
+	                                 </a>
+	                                 <div class="media-body">
+	                                     <h3 class="media-heading">전화번호</h3>
+	                                 </div>
+	                             </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <div class="media feature"> <!-- 전화번호 -->
+	                                 <div class="form-group">
+	                                     <input readonly="true" type="text" class="form-control" th:field="*{telNum}" style="color:black;"/>
+	                                 </div>
+		                        </div>
+		                     </div>
+				   	 	 	 <div class="col-md-4 col-sm-4 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+	                                 <a class="pull-left" >
+	                                     <i class="fa fa-sort fa-2x"></i>
+	                                 </a>
+	                                 <div class="media-body">
+	                                     <h3 class="media-heading">층수</h3>
+	                                 </div>
+	                             </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <div class="media feature"> <!-- 층수 -->
+	                                 <div class="form-group">
+	                                     <input readonly="true" type="text" class="form-control" th:field="*{floor}" style="color:black;"/>
+	                                 </div>
+		                        </div>
+		                     </div>
+				   	 	 	 <div class="col-md-12 col-sm-12 contact-details scrollpoint sp-effect2">
+					            <div class="media feature">
+	                                 <a class="pull-left" >
+	                                     <i class="fa fa-plus fa-2x"></i>
+	                                 </a>
+	                                 <div class="media-body">
+	                                     <h3 class="media-heading">추가옵션</h3>
+	                                 </div>
+	                             </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+                                 <a class="pull-left" >
+                                     <input type="checkbox" th:field="*{buildingCCTV}" readonly="true"></input>
+                                 </a>
+                                 <div class="media-body">
+                                     <h3 class="media-heading">건물 내 CCTV</h3>
+                                 </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+                                 <a class="pull-left" >
+                                     <input type="checkbox" th:field="*{outsideCCTV}" readonly="true"></input>
+                                 </a>
+                                 <div class="media-body">
+                                     <h3 class="media-heading" >외부(근방100m) CCTV</h3>
+                                 </div>
+					         </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <a class="pull-left" th:field="*{park}" readonly="true">
+                                     <input type="checkbox"></input>
+                                 </a>
+                                 <div class="media-body">
+                                     <h3 class="media-heading">공원</h3>
+                                 </div>
+		                     </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <a class="pull-left" >
+                                     <input id="aa" type="checkbox" th:field="*{parkinglot}" readonly="true"></input>
+                                 </a>
+                                 <div class="media-body">
+                                     <h3 class="media-heading">주차장</h3>
+                                 </div>
+		                     </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <a class="pull-left" >
+                                    <input id="dd" type="checkbox" th:field="*{pet}" readonly="true"></input>
+                                 </a>
+                                 <div class="media-body">
+                                     <h3 class="media-heading">애완동물</h3>
+                                 </div>
+		                     </div>
+		                     <div class="col-md-8 col-sm-8 scrollpoint sp-effect1">
+		                        <a class="pull-left" >
+                                    <input type="checkbox" th:field="*{roomOption}" readonly="true"></input>
+                                 </a>
+                                 <div class="media-body">
+                                     <h3 class="media-heading">풀옵션</h3>
+                                 </div>
+		                     </div>
+				        </div>
+			        </div>
+		            <div class="container">
+		                <div class="row">
+		                    <div class="col-md-12">
+		                        <div class="row">
+		                            <div class="col-md-12 col-sm-12 scrollpoint sp-effect1">
+	                                    <div class="form-group">
+	                                        <input type="text" th:field="*{title}" class="form-control" placeholder="제목"/>
+	                                    </div>
+	                                    <div class="form-group">
+	                                        <textarea cols="30" rows="10" class="form-control" placeholder="상세설명" readonly="true"
+	                                         th:field="*{detail}"></textarea>
+	                                    </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		        </section>
+	        </div>
+        </form>
+      	<script>
+      		
+      	$("#popMap").click(function(){
+      		alert("조회상태에서는 수정할 수 없습니다.");
+		});	
+		</script>
+      </div>
+  </body>
+</html>
